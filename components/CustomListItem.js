@@ -6,14 +6,11 @@ import { db } from "../firebase";
 
 const CustomListItem = ({ id, chatName, enterChat }) => {
   const [chatMessages, setChatMessages] = useState([]);
-  console.log("chatMessages is", chatMessages);
 
   useEffect(() => {
     const messagesRef = collection(db, "chats", id, "messages");
     const q = query(messagesRef, orderBy("timestamp", "asc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      console.log("docs array is", querySnapshot.docs);
-
       setChatMessages(
         querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -29,7 +26,9 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
       <Avatar
         rounded
         source={{
-          uri: chatMessages[chatMessages.length - 1]?.data?.photoURL,
+          uri:
+            chatMessages[chatMessages.length - 1]?.data?.photoURL ??
+            "https://upload.wikimedia.org/wikipedia/commons/a/a9/Signal_ultramarine_icon.png",
         }}
       />
       <ListItem.Content>
@@ -37,8 +36,11 @@ const CustomListItem = ({ id, chatName, enterChat }) => {
           {chatName}
         </ListItem.Title>
         <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
-          {chatMessages?.[chatMessages.length - 1]?.data?.displayName}:{" "}
-          {chatMessages?.[chatMessages.length - 1]?.data?.message}
+          {chatMessages?.[chatMessages.length - 1]?.data?.displayName ??
+            "No messages yet"}
+          :{" "}
+          {chatMessages?.[chatMessages.length - 1]?.data?.message ??
+            "Say Hello"}
         </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>

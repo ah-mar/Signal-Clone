@@ -28,8 +28,6 @@ import { auth, db } from "../firebase";
 const ChatScreen = ({ navigation, route }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
-  console.log("route is", route);
-  console.log("messages is", messages);
 
   async function sendMessage() {
     Keyboard.dismiss();
@@ -52,8 +50,6 @@ const ChatScreen = ({ navigation, route }) => {
     const messagesRef = collection(db, "chats", route.params.id, "messages");
     const q = query(messagesRef, orderBy("timestamp", "asc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      console.log("docs array is", querySnapshot.docs);
-
       setMessages(
         querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -65,10 +61,6 @@ const ChatScreen = ({ navigation, route }) => {
   }, [route]);
 
   useLayoutEffect(() => {
-    console.log(
-      "message url is ",
-      messages[messages.length - 1]?.data?.photoURL
-    );
     navigation.setOptions({
       title: "Chat",
       headerTitleAlign: "left",

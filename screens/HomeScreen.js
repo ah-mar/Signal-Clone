@@ -18,15 +18,13 @@ import { SafeAreaView } from "react-native";
 import CustomListItem from "../components/CustomListItem.js";
 import { Icon } from "@rneui/themed";
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 const HomeScreen = ({ navigation }) => {
   const [chats, setChats] = useState([]);
 
-  console.log("chats is", chats);
-
   useEffect(() => {
-    const unsubscribe = getDocs(collection(db, "chats")).then((snapshot) => {
+    const unsub = onSnapshot(collection(db, "chats"), (snapshot) => {
       setChats(
         snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -34,7 +32,21 @@ const HomeScreen = ({ navigation }) => {
         }))
       );
     });
-    return unsubscribe;
+
+    // async function getDocsFirebase() {
+    //   getDocs(collection(db, "chats")).then((snapshot) => {
+    //     setChats(
+    //       snapshot.docs.map((doc) => ({
+    //         id: doc.id,
+    //         data: doc.data(),
+    //       }))
+    //     );
+    //   });
+    // }
+
+    // getDocsFirebase();
+
+    return unsub;
   }, []);
 
   useLayoutEffect(() => {
@@ -91,7 +103,6 @@ const HomeScreen = ({ navigation }) => {
   }
 
   function enterChat(id, chatName) {
-    console.log(id, chatName);
     navigation.navigate("Chat", {
       id,
       chatName,
@@ -123,9 +134,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginRight: 10,
+    marginBottom: 10,
+    padding: 20,
   },
   container: {
-    height: "100%",
+    height: "90%",
     padding: 10,
     backgroundColor: "white",
   },

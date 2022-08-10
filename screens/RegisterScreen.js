@@ -49,7 +49,7 @@ const RegisterScreen = ({ navigation }) => {
 
       <Image
         source={{
-          uri: "https://blog.mozilla.org/internetcitizen/files/2018/08/signal-logo.png",
+          uri: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Signal_ultramarine_icon.png",
         }}
         style={{ width: 200, height: 200 }}
       />

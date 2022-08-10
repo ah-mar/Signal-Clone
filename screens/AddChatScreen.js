@@ -15,7 +15,7 @@ const AddChatScreen = ({ navigation }) => {
       const docRef = await addDoc(collection(db, "chats"), {
         chatName: input,
       });
-      console.log("Document written with ID: ", docRef.id);
+
       navigation.goBack();
     } catch (e) {
       console.error("Error adding document: ", e);
